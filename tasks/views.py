@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views import View
+from .models import Task
 
 # Create your views here.
 class TaskListView(View):
