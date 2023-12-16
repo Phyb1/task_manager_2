@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from .models import Task
 from .forms import TaskForm
@@ -9,7 +9,14 @@ class TaskListView(View):
         tasks = Task.objects.all()
         return render(request, 'task_list.html', {'tasks': tasks})
     
-
+    def post(self, request):
+        task_id = request.POST.get('task_id')
+        task = get_object_or_404(Task, pk=task_id)
+        task.completed = not task.completed
+        task.save()
+        return redirect('task-list')
+    
+        
 class TaskCreateView(View):
     def get(self, request):
         form = TaskForm()
