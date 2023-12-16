@@ -1,4 +1,6 @@
-{% extends "base.html" %}
+<!-- Inside your templates folder -->
+
+{% extends 'base.html' %}
 {% block title %}Task list{% endblock title %}
 {% block content %}
     <div class="container mt-4">
@@ -8,9 +10,22 @@
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     {{ task.title }}
                     <span class="badge badge-primary badge-pill">{{ task.status }}</span>
+                    <form method="post" class="form-inline">
+                        {% csrf_token %}
+                        <input type="hidden" name="task_id" value="{{ task.id }}">
+                        <button type="submit" class="btn btn-success btn-sm">
+                            {% if task.completed %}
+                                Mark as Incomplete
+                            {% else %}
+                                Mark as Done
+                            {% endif %}
+                        </button>
+                    </form>
                 </li>
             {% endfor %}
         </ul>
+    </div>
+
         <p>Add a <a href="{% url 'task-create' %}" >new task</a></p>
     </div>
 {% endblock content %}
